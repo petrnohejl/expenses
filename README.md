@@ -16,17 +16,19 @@ Expenses script make 3 modifications to CSV file:
 Usage
 =====
 
-Expenses is a console application (must be run in the command line)
-and is written in Python 2.7. To run it, you must have installed Python
-interpreter, which can be downloaded at: www.python.org.
+Expenses is a console application and is written in Python 2.7. To run it,
+you must have installed Python interpreter, which can be downloaded
+at www.python.org.
 
-* python expenses.py mydata.csv
+```bash
+$ python expenses.py mydata.csv    # run expenses script
+```
 
 
 Developed by
 ============
 
-[Petr Nohejl](http://petrnohejl.cz), 2014
+* [Petr Nohejl](http://petrnohejl.cz)
 
 
 License
