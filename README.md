@@ -12,6 +12,8 @@ Expenses script make 3 modifications to CSV file:
 * add category column (categories are automatically detected by regex)
 * add month column
 
+I wrote [a blog post about Expenses](http://blog.petrnohejl.cz/evidence-osobnich-vydaju) (in Czech).
+
 
 Usage
 =====
