@@ -36,7 +36,9 @@ class Expenses():
 		file_output = open(string.split(filename, ".")[0] + "_categorized.csv", "w")
 
 		for line in file_input:
-			if string.count(line, ";")==12:
+			if string.count(line, ";")==7:
+
+				line = self.remove_quotes(line)
 
 				# invert sign of amounts because of pie chart
 				# earnings gonna be negative, expenses gonna be positive
@@ -46,21 +48,21 @@ class Expenses():
 					e
 
 				# category patterns
-				self.pattern_car = re.compile("SHELL BM|ROBIN OIL|AGIP|AVIA|AUTOCENTRUM ROS|CERPACI ST", re.DOTALL | re.IGNORECASE)
+				self.pattern_car = re.compile("SHELL BM|ROBIN OIL|AGIP|AVIA|AUTOCENTRUM ROS|CERPACI ST|EUROOIL", re.DOTALL | re.IGNORECASE)
 				self.pattern_atm = re.compile("Výběr z bankomatu", re.DOTALL | re.IGNORECASE)
 				self.pattern_living = re.compile("Byt Brno", re.DOTALL | re.IGNORECASE)
-				self.pattern_gifts = re.compile("dárek", re.DOTALL | re.IGNORECASE)
-				self.pattern_transport = re.compile("STUDENT AGENCY|DPMB", re.DOTALL | re.IGNORECASE)
-				self.pattern_holiday = re.compile("HOTEL|INTER PARTNER ASSISTA|allianz|GENERALI", re.DOTALL | re.IGNORECASE)
-				self.pattern_transaction = re.compile("PŘEVOD NA OSOBNÍ ÚČET", re.DOTALL | re.IGNORECASE)
-				self.pattern_it = re.compile("VPS hosting|GOOGLE", re.DOTALL | re.IGNORECASE)
-				self.pattern_food = re.compile("TESCO|ALBERT|KAUFLAND|INTERSPAR|LIDL|BILLA|PENNY MARKET|RESTAURACE|MOTOREST|LEKARNA", re.DOTALL | re.IGNORECASE)
-				self.pattern_culture = re.compile("bubnovani", re.DOTALL | re.IGNORECASE)
+				self.pattern_gifts = re.compile("dárek|JEZISEK|narozenin|Vanoce", re.DOTALL | re.IGNORECASE)
+				self.pattern_transport = re.compile("STUDENT AGENCY|DPMB|CESKE DRAHY|CD PRAHA HL.N.|CD BRNO HL.N.", re.DOTALL | re.IGNORECASE)
+				self.pattern_holiday = re.compile("AIRBNB|HOTEL|INTER PARTNER ASSISTA|allianz|GENERALI|Dovolená", re.DOTALL | re.IGNORECASE)
+				self.pattern_transaction = re.compile("PŘEVOD NA OSOBNÍ ÚČET|Převod na osobní účet|e-Broker|PAYPAL PTE LTD", re.DOTALL | re.IGNORECASE)
+				self.pattern_it = re.compile("VPS hosting|GOOGLE|Spotify|subreg.cz", re.DOTALL | re.IGNORECASE)
+				self.pattern_food = re.compile("TESCO|ALBERT|KAUFLAND|INTERSPAR|LIDL|BILLA|PENNY MARKET|RESTAURACE|MOTOREST|LEKARNA|RISTORANTE|JEDNA BASEN|Henry am Zug|JLV, A.S.|OXALIS|MYFOODMARKET|BAR, KTERY NEEXISTUJE", re.DOTALL | re.IGNORECASE)
+				self.pattern_culture = re.compile("bubnovani|djembe|festival", re.DOTALL | re.IGNORECASE)
 				self.pattern_clothes = re.compile("H & M|H&M|CROPP TOWN|CROPPTOWN|MARKS&SPENCER|NEW YORKER|C&A|PRIMARK|Deichmann", re.DOTALL | re.IGNORECASE)
-				self.pattern_shopping = re.compile("Alza|SLEVOMAT CZ|VYKUPTO CZ|kasa.cz|KNIHY DOBROVSKY|KANZELSBERGER|HERVIS", re.DOTALL | re.IGNORECASE)
+				self.pattern_shopping = re.compile("Alza|SLEVOMAT CZ|VYKUPTO CZ|kasa.cz|KNIHY DOBROVSKY|KANZELSBERGER|HERVIS|DROGERIE|hithit.cz|DX.COM", re.DOTALL | re.IGNORECASE)
 				self.pattern_savings = re.compile("Penzijní připojištění", re.DOTALL | re.IGNORECASE)
 				self.pattern_phone = re.compile("Vodafone", re.DOTALL | re.IGNORECASE)
-				self.pattern_home = re.compile("IKEA CR|HORNBACH|BAUHAUS|MEUBLE", re.DOTALL | re.IGNORECASE)
+				self.pattern_home = re.compile("IKEA|HORNBACH|BAUHAUS|MEUBLE", re.DOTALL | re.IGNORECASE)
 
 				# add category column
 				if self.is_header(line):
@@ -77,6 +79,8 @@ class Expenses():
 				except ValueError, e:
 					if self.is_header(line): line = "Měsíc;" + line # header line
 					else: line = ";" + line
+			else:
+				print "CSV schema has been changed!"
 
 			file_output.write(line)
 
@@ -84,9 +88,16 @@ class Expenses():
 		file_output.close
 
 
+	def remove_quotes(self, line):
+		line = string.replace(line, '";"', ';')
+		start = string.find(line, '"') + 1;
+		end = string.rfind(line, '"');
+		return line[start:end] + "\n"
+
+
 	def invert_amount(self, line):
-		start = self.find_nth(line, ";", 2) + 1 # amount value is between second and third semicolon
-		end = self.find_nth(line, ";", 3)
+		start = self.find_nth(line, ";", 1) + 1 # amount value is between first and second semicolon
+		end = self.find_nth(line, ";", 2)
 		num_str = line[start:end] # get amount
 		num_str = string.replace(num_str, " ", "") # remove whitespace
 		num_str = string.replace(num_str, ",", ".") # replace decimal comma
@@ -155,8 +166,8 @@ class Expenses():
 
 
 	def add_month(self, line):
-		start = self.find_nth(line, ";", 2) + 1 # date value is between second and third semicolon
-		end = self.find_nth(line, ";", 3)
+		start = self.find_nth(line, ";", 1) + 1 # date value is between first and second semicolon
+		end = self.find_nth(line, ";", 2)
 		date_str = line[start:end] # get date
 		month_str = string.split(date_str, ".")[1] # get month string
 		month_num = string.atoi(month_str) # get month number
@@ -167,7 +178,7 @@ class Expenses():
 
 	def is_header(self, line):
 		# check if this line is CSV header
-		return ";Datum;Objem;" in line
+		return "Datum;Objem;" in line
 
 
 	def find_nth(self, haystack, needle, n):
