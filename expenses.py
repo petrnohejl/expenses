@@ -12,6 +12,7 @@ CATEGORY_CAR = "Auto"
 CATEGORY_ATM = "Bankomat"
 CATEGORY_LIVING = "Bydlení"
 CATEGORY_GIFTS = "Dary"
+CATEGORY_KIDS = "Děti"
 CATEGORY_TRANSPORT = "Doprava"
 CATEGORY_HOLIDAY = "Dovolená"
 CATEGORY_DRUG = "Drogerie"
@@ -50,23 +51,24 @@ class Expenses():
 					e
 
 				# category patterns
-				self.pattern_car = re.compile("SHELL|ROBIN OIL|AGIP|AVIA|AUTOCENTRUM|CERPACI ST|EUROOIL|OMV|Videnska - PFS|MOL - OBORISTE|UNICORN|STK BRNO", re.DOTALL | re.IGNORECASE)
+				self.pattern_car = re.compile("SHELL|ROBIN OIL|AGIP|AVIA|AUTOCENTRUM|CERPACI ST|EUROOIL|OMV|Videnska - PFS|MOL - OBORISTE|MOL - PRAHA|UNICORN|STK BRNO|OIL|AUTONOVA", re.DOTALL | re.IGNORECASE)
 				self.pattern_atm = re.compile("Výběr z bankomatu", re.DOTALL | re.IGNORECASE)
 				self.pattern_living = re.compile("Byt Brno|Nájem|Pojištění domácnosti|E.ON|Internet O2", re.DOTALL | re.IGNORECASE)
 				self.pattern_gifts = re.compile("dárek|JEZISEK|narozenin|Vanoce", re.DOTALL | re.IGNORECASE)
-				self.pattern_transport = re.compile("STUDENT AGENCY|DPMB|CESKE DRAHY|CD PRAHA HL.N.|CD BRNO HL.N.|regiojet|ZLUTY.CZ|CD.CZ|DOPRAVNI PODNIK", re.DOTALL | re.IGNORECASE)
-				self.pattern_holiday = re.compile("AIRBNB|HOTEL|INTER PARTNER ASSISTA|allianz|GENERALI|Dovolená", re.DOTALL | re.IGNORECASE)
-				self.pattern_drug = re.compile("DROGERIE|LEKARNA|ROSSMANN|YVES ROCHER|MANUFAKTURA|FINCLUB|DUMEKO", re.DOTALL | re.IGNORECASE)
-				self.pattern_transaction = re.compile("PŘEVOD NA OSOBNÍ ÚČET|Převod na osobní účet|e-Broker|PAYPAL PTE LTD", re.DOTALL | re.IGNORECASE)
-				self.pattern_it = re.compile("VPS hosting|GOOGLE|Spotify|subreg.cz|STEAMGAMES", re.DOTALL | re.IGNORECASE)
-				self.pattern_food = re.compile("TESCO|ALBERT|KAUFLAND|INTERSPAR|LIDL|BILLA|PENNY MARKET|COOP|GLOBUS|CARREFOUR|SAFEWAY|WALGREENS|RALPHS|RELAY|OXALIS|zdrave vyzivy|GAZDA MARKET|SKLIZENO|KARLOVA PEKARNA", re.DOTALL | re.IGNORECASE)
+				self.pattern_kids = re.compile("baby|SPUNTIK|BAMBULE|MAJKA - SHOP", re.DOTALL | re.IGNORECASE)
+				self.pattern_transport = re.compile("STUDENT AGENCY|DPMB|CESKE DRAHY|CD PRAHA HL.N.|CD BRNO HL.N.|regiojet|ZLUTY.CZ|CD.CZ|DOPRAVNI PODNIK|ARRIVA|DPP AUTOMATY", re.DOTALL | re.IGNORECASE)
+				self.pattern_holiday = re.compile("AIRBNB|HOTEL|INTER PARTNER ASSISTA|allianz|GENERALI|axa-assistance|Dovolená", re.DOTALL | re.IGNORECASE)
+				self.pattern_drug = re.compile("DROGERIE|LEKARNA|ROSSMANN|YVES ROCHER|MANUFAKTURA|FINCLUB|DUMEKO|USTAVNI LEK", re.DOTALL | re.IGNORECASE)
+				self.pattern_transaction = re.compile("PŘEVOD NA OSOBNÍ ÚČET|Převod na osobní účet|e-Broker|PAYPAL PTE LTD|živobytí", re.DOTALL | re.IGNORECASE)
+				self.pattern_it = re.compile("VPS hosting|GOOGLE|Spotify|subreg.cz|STEAMGAMES|rozhlas", re.DOTALL | re.IGNORECASE)
+				self.pattern_food = re.compile("TESCO|ALBERT|KAUFLAND|INTERSPAR|LIDL|BILLA|PENNY MARKET|COOP|GLOBUS|CARREFOUR|SAFEWAY|WALGREENS|RALPHS|RELAY|OXALIS|zdrave vyzivy|GAZDA MARKET|SKLIZENO|KARLOVA PEKARNA|UVOZ BRNO|TCHIBO|PEKARNA|PEKARSTVI|Potraviny|BIOPOINT|BRANA KE ZDRAVI", re.DOTALL | re.IGNORECASE)
 				self.pattern_culture = re.compile("bubnovani|djembe|festival|KINO SCALA|TICKETLIVE.CZ", re.DOTALL | re.IGNORECASE)
-				self.pattern_clothes = re.compile("H & M|H&M|CROPP TOWN|CROPPTOWN|MARKS&SPENCER|NEW YORKER|C&A|PRIMARK|Deichmann|CCC|ECCO|ZOOT|CAMAIEU|LINDEX|ORSAY|TEZENIS", re.DOTALL | re.IGNORECASE)
+				self.pattern_clothes = re.compile("H & M|H&M|CROPP TOWN|CROPPTOWN|MARKS&SPENCER|NEW YORKER|C&A|PRIMARK|Deichmann|CCC|ECCO|ZOOT|CAMAIEU|LINDEX|ORSAY|TEZENIS|BANDI", re.DOTALL | re.IGNORECASE)
 				self.pattern_shopping = re.compile("Alza|SLEVOMAT CZ|VYKUPTO CZ|kasa.cz|KNIHY DOBROVSKY|KANZELSBERGER|HERVIS|hithit.cz|DX.COM|CZC|Datart|ALIEXPRESS|OKAY|SALON EXCLUSIVE", re.DOTALL | re.IGNORECASE)
-				self.pattern_restaurant = re.compile("RESTAURACE|RESTAURANT|MOTOREST|RISTORANTE|CUKRARNA|JEDNA BASEN|Henry am Zug|JLV, A.S.|MYFOODMARKET|KTERY NEEXISTUJE|PIZZA|SPACEK|SPORTBAR|MAMUT|NA-TAHU|PADOWETZ|BURGER|MAMY|SUBWAY|STARBUCKS|SKOG|ZLATA LOD|TANKOVNA|U ZABRANSKYCH|CAIPLA|POTREFENA HUSA|BAROKO|JLV - FRANCHISING|Mitrovski|UMAMI|ANNAPURNA|4POKOJE|JBM Brew|PIVOVARSKY|VESELA VACICE|GO, BRNO|GO,  BEHOUNSKA|KAVARNA SPOLEK|PIVNICE U CAPA|COSMOPOLIS GRILL|U Hoveziho pupku|KFC|TRAPAS BAR|Kamil Mucha|WOKER", re.DOTALL | re.IGNORECASE)
+				self.pattern_restaurant = re.compile("RESTAURACE|RESTAURANT|MOTOREST|RISTORANTE|CUKRARNA|JEDNA BASEN|Henry am Zug|JLV, A.S.|MYFOODMARKET|KTERY NEEXISTUJE|PIZZA|SPACEK|SPORTBAR|MAMUT|NA-TAHU|PADOWETZ|BURGER|MAMY|SUBWAY|STARBUCKS|SKOG|ZLATA LOD|TANKOVNA|U ZABRANSKYCH|CAIPLA|POTREFENA HUSA|BAROKO|JLV - FRANCHISING|Mitrovski|UMAMI|ANNAPURNA|4POKOJE|JBM Brew|PIVOVARSKY|VESELA VACICE|GO, BRNO|GO,  BEHOUNSKA|KAVARNA SPOLEK|PIVNICE U CAPA|COSMOPOLIS GRILL|U Hoveziho pupku|KFC|TRAPAS BAR|Kamil Mucha|WOKER|GRIL|JIDELNI VUZ|HOSPODA|Burrito|PARODIE|SALATERIE|CHARLIES SQUARE|U TRECH CERTU|BISTRO|KAVARNA|CAFE|COFFEE|NORDSEE|Pho Brno|HIMALAYA|PECEME JINAK|HAIKKY|RED HOT CHILLI|MONTE BU|BILBO SMAK|AKOMI|WOK U FUGIHO|JLV|CHILLI TREE|RAMEN", re.DOTALL | re.IGNORECASE)
 				self.pattern_savings = re.compile("Penzijní připojištění", re.DOTALL | re.IGNORECASE)
 				self.pattern_phone = re.compile("Vodafone|T-mobile", re.DOTALL | re.IGNORECASE)
-				self.pattern_home = re.compile("IKEA|HORNBACH|BAUHAUS|MEUBLE", re.DOTALL | re.IGNORECASE)
+				self.pattern_home = re.compile("IKEA|HORNBACH|BAUHAUS|MEUBLE|SCONTO", re.DOTALL | re.IGNORECASE)
 
 				# add category column
 				if self.is_header(line):
@@ -120,6 +122,7 @@ class Expenses():
 		atm = self.pattern_atm.findall(line)
 		living = self.pattern_living.findall(line)
 		gifts = self.pattern_gifts.findall(line)
+		kids = self.pattern_kids.findall(line)
 		transport = self.pattern_transport.findall(line)
 		holiday = self.pattern_holiday.findall(line)
 		drug = self.pattern_drug.findall(line)
@@ -142,6 +145,8 @@ class Expenses():
 			category = CATEGORY_LIVING
 		elif(len(gifts)>0):
 			category = CATEGORY_GIFTS
+		elif(len(gifts)>0):
+			category = CATEGORY_KIDS
 		elif(len(transport)>0):
 			category = CATEGORY_TRANSPORT
 		elif(len(holiday)>0):
